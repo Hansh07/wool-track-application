@@ -24,7 +24,14 @@ const transports = [
     }),
 ];
 
-const exceptionHandlers = [];
+const exceptionHandlers = [
+    new winston.transports.Console({
+        format: winston.format.combine(
+            winston.format.colorize(),
+            logFormat
+        ),
+    })
+];
 
 // Only write to files if not in production (PaaS like Render have ephemeral filesystems)
 if (process.env.NODE_ENV !== 'production') {
