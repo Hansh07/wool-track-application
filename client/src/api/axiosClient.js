@@ -9,9 +9,19 @@ const axiosClient = axios.create({
 // Request interceptor - attach access token & fix path duplication
 axiosClient.interceptors.request.use(
     (config) => {
-        // Fix potential double /api prefix (e.g. baseURL=/api + url=/api/auth)
-        if (config.baseURL?.endsWith('/api') && config.url?.startsWith('/api')) {
-            config.url = config.url.replace('/api', '');
+        // --- ROBUST URL NORMALIZATION ---
+        // 1. Ensure baseURL does NOT end with /api
+        if (config.baseURL?.endsWith('/api')) config.baseURL = config.baseURL.slice(0, -4);
+        if (config.baseURL?.endsWith('/api/')) config.baseURL = config.baseURL.slice(0, -5);
+
+        // 2. Ensure url ALWAYS starts with /api (unless it's an external URL)
+        if (config.url && !config.url.startsWith('http') && !config.url.startsWith('//')) {
+            const cleanUrl = config.url.startsWith('/') ? config.url : '/' + config.url;
+            if (!cleanUrl.startsWith('/api')) {
+                config.url = '/api' + cleanUrl;
+            } else {
+                config.url = cleanUrl;
+            }
         }
 
         const token = localStorage.getItem('accessToken');
