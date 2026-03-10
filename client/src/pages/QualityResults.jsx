@@ -13,7 +13,7 @@ const QualityResults = () => {
     useEffect(() => {
         const fetchReports = async () => {
             try {
-                const { data } = await client.get('/quality/my');
+                const { data } = await client.get('/api/quality/my');
                 setReports(data);
             } catch (error) {
                 console.error("Error fetching quality reports:", error);

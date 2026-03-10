@@ -19,7 +19,7 @@ const InspectorDashboard = () => {
         const fetchBatches = async () => {
             try {
                 // Inspectors only see Finished batches (server also enforces this)
-                const { data } = await client.get('/batches?stage=Finished');
+                const { data } = await client.get('/api/batches?stage=Finished');
                 setBatches(Array.isArray(data) ? data : (data.batches || []));
             } catch (error) {
                 console.error("Error fetching batches:", error);

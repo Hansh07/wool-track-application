@@ -37,7 +37,7 @@ export default function InventoryPage() {
             const params = new URLSearchParams();
             if (filter.status) params.set('status', filter.status);
             if (filter.warehouse) params.set('warehouse', filter.warehouse);
-            const res = await axiosClient.get('/inventory?' + params.toString());
+            const res = await axiosClient.get('/api/inventory?' + params.toString());
             if (res.data.success) {
                 setInventory(res.data.items || []);
                 setSummary(res.data.summary || { total: 0, byStatus: {}, byType: {} });
@@ -53,7 +53,7 @@ export default function InventoryPage() {
 
     const handleStatusChange = async (id, newStatus) => {
         try {
-            await axiosClient.patch(`/inventory/${id}`, { status: newStatus });
+            await axiosClient.patch(`/api/inventory/${id}`, { status: newStatus });
             setInventory(prev => prev.map(item => item._id === id ? { ...item, status: newStatus } : item));
         } catch {
             alert('Failed to update status');
@@ -64,7 +64,7 @@ export default function InventoryPage() {
         e.preventDefault();
         setSaving(true);
         try {
-            await axiosClient.post('/inventory', form);
+            await axiosClient.post('/api/inventory', form);
             setShowModal(false);
             setForm({ woolType: '', grade: '', quantity: '', unit: 'kg', warehouse: '', status: 'In Stock', notes: '' });
             fetchInventory();

@@ -23,7 +23,7 @@ const BatchDetail = () => {
 
     const fetchBatch = async () => {
         try {
-            const { data } = await client.get(`/batches/${id}`);
+            const { data } = await client.get(`/api/batches/${id}`);
             setBatch(data);
         } catch (error) {
             console.error('Error:', error);
@@ -38,7 +38,7 @@ const BatchDetail = () => {
 
     const updateStage = async (newStage) => {
         try {
-            await client.patch(`/batches/${id}/status`, { stage: newStage, note: `Stage updated to ${newStage}` });
+            await client.patch(`/api/batches/${id}/status`, { stage: newStage, note: `Stage updated to ${newStage}` });
             fetchBatch();
         } catch (error) {
             alert('Failed to update stage');
@@ -51,7 +51,7 @@ const BatchDetail = () => {
 
     const handleApprove = async () => {
         try {
-            await client.patch(`/quality/approve/${id}`);
+            await client.patch(`/api/quality/approve/${id}`);
             // Show success in modal first? Or close and show?
             // Let's close and show on main page to verify update.
             setShowInspectionModal(false);
@@ -66,7 +66,7 @@ const BatchDetail = () => {
     const handleReject = async () => {
         if (!window.confirm('Are you sure you want to reject this batch?')) return;
         try {
-            await client.patch(`/quality/reject/${id}`);
+            await client.patch(`/api/quality/reject/${id}`);
             setShowInspectionModal(false);
             fetchBatch();
             setInspectionSuccess(true);
@@ -112,7 +112,7 @@ const BatchDetail = () => {
     const handleAddLog = (note) => {
         if (note) {
             // Quick hack to refresh active stage logs if needed, but mainly posting log
-            client.post(`/batches/${id}/logs`, { note })
+            client.post(`/api/batches/${id}/logs`, { note })
                 .then(() => {
                     fetchBatch();
                     setNoteSuccess(true);

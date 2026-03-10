@@ -12,7 +12,7 @@ const AdminPanel = () => {
 
     const fetchUsers = async () => {
         try {
-            const { data } = await client.get('/admin/users');
+            const { data } = await client.get('/api/admin/users');
             setUsers(data);
         } catch (error) {
             console.error('Error fetching users:', error);
@@ -27,7 +27,7 @@ const AdminPanel = () => {
 
     const handleRoleChange = async (userId, newRole) => {
         try {
-            await client.patch(`/admin/assign-role/${userId}`, { role: newRole });
+            await client.patch(`/api/admin/assign-role/${userId}`, { role: newRole });
             setUsers(users.map(u => u._id === userId ? { ...u, role: newRole } : u));
         } catch (error) {
             alert('Failed to update role');

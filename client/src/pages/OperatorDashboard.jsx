@@ -417,7 +417,7 @@ const OperatorDashboard = () => {
         setDraggedBatch(null);
         setDragOverStage(null);
         try {
-            await client.patch(`/batches/${draggedBatch._id}/status`, { stage: targetStage });
+            await client.patch(`/api/batches/${draggedBatch._id}/status`, { stage: targetStage });
         } catch {
             setBatches(prev);
         } finally {

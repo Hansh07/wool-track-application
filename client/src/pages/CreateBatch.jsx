@@ -52,7 +52,7 @@ const CreateBatch = () => {
         images.forEach(image => data.append('images', image));
 
         try {
-            await client.post('/batches', data, {
+            await client.post('/api/batches', data, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             navigate('/');

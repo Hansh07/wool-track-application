@@ -19,7 +19,7 @@ const MyOrders = () => {
 
     const fetchOrders = async () => {
         try {
-            const { data } = await client.get('/shop/orders/my');
+            const { data } = await client.get('/api/shop/orders/my');
             setOrders(Array.isArray(data) ? data : (data.orders || []));
         } catch (error) {
             console.error("Error fetching orders:", error);
@@ -35,7 +35,7 @@ const MyOrders = () => {
     const handleRemove = async (orderId) => {
         if (window.confirm('Are you sure you want to cancel this order?')) {
             try {
-                await client.delete(`/shop/order/${orderId}`);
+                await client.delete(`/api/shop/order/${orderId}`);
                 fetchOrders();
             } catch (error) {
                 console.error("Error removing order:", error);
@@ -66,7 +66,7 @@ const MyOrders = () => {
         setTimeout(async () => {
             try {
                 if (!selectedOrder) return;
-                await client.post(`/shop/order/${selectedOrder._id}/pay`, {
+                await client.post(`/api/shop/order/${selectedOrder._id}/pay`, {
                     paymentMethod,
                     provider: selectedProvider
                 });

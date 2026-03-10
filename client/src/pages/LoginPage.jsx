@@ -32,7 +32,7 @@ export default function LoginPage() {
         try {
             const payload = { email: form.email, password: form.password };
             if (form.twoFactorCode) payload.twoFactorToken = form.twoFactorCode;
-            const res = await axiosClient.post('auth/login', payload);
+            const res = await axiosClient.post('/api/auth/login', payload);
             if (res.data.requiresTwoFactor) { setRequiresTwoFactor(true); setLoading(false); return; }
             login(res.data);
             navigate('/');

@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     const fetchMe = useCallback(async (token) => {
         try {
             // Server returns flat object: { _id, name, email, role, permissions, ... }
-            const res = await axios.get('auth/me', { headers: { Authorization: 'Bearer ' + token } });
+            const res = await axios.get('/api/auth/me', { headers: { Authorization: 'Bearer ' + token } });
             setUser(res.data);
         } catch {
             setUser(null);
@@ -36,14 +36,14 @@ export const AuthProvider = ({ children }) => {
     };
 
     const register = async (name, email, password, role) => {
-        const res = await axios.post('auth/register', { name, email, password, role });
+        const res = await axios.post('/api/auth/register', { name, email, password, role });
         login(res.data);
     };
 
     const logout = async () => {
         try {
             const rt = localStorage.getItem('refreshToken');
-            if (rt) await axios.post('auth/logout', { refreshToken: rt });
+            if (rt) await axios.post('/api/auth/logout', { refreshToken: rt });
         } catch { }
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');

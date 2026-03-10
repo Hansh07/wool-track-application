@@ -48,7 +48,7 @@ const FarmerDashboard = () => {
     useEffect(() => {
         const fetchBatches = async () => {
             try {
-                const { data } = await client.get('/batches');
+                const { data } = await client.get('/api/batches');
                 setBatches(Array.isArray(data) ? data : (data.batches || []));
             } catch {
                 setError('Failed to load batches. Please refresh.');
@@ -66,8 +66,8 @@ const FarmerDashboard = () => {
 
     // Revenue — only batches that have been quality-inspected get financials
     const pricedBatches = batches.filter(b => b.financials);
-    const grossRevenue   = pricedBatches.reduce((s, b) => s + (b.financials.grossRevenue || 0), 0);
-    const totalFees      = pricedBatches.reduce((s, b) => s + (
+    const grossRevenue = pricedBatches.reduce((s, b) => s + (b.financials.grossRevenue || 0), 0);
+    const totalFees = pricedBatches.reduce((s, b) => s + (
         (b.financials.serviceFees?.inspection || 0) +
         (b.financials.serviceFees?.processing || 0) +
         (b.financials.serviceFees?.platform || 0)
@@ -128,7 +128,7 @@ const FarmerDashboard = () => {
                 {/* Stats Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {/* Revenue Card */}
-                    <motion.div initial={{ opacity:0, y:22 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.05, duration:0.45, ease:[0.22,1,0.36,1] }}>
+                    <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
                         <Card hoverEffect className="relative overflow-hidden group border-primary-100 backdrop-blur-md">
                             <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                                 <DollarSign size={100} />
@@ -172,7 +172,7 @@ const FarmerDashboard = () => {
                     </motion.div>
 
                     {/* Total Batches */}
-                    <motion.div initial={{ opacity:0, y:22 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.12, duration:0.45, ease:[0.22,1,0.36,1] }}>
+                    <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
                         <Card hoverEffect className="relative overflow-hidden group border-gray-100">
                             <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                                 <Package size={100} />
@@ -190,7 +190,7 @@ const FarmerDashboard = () => {
                     </motion.div>
 
                     {/* In Processing */}
-                    <motion.div initial={{ opacity:0, y:22 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.19, duration:0.45, ease:[0.22,1,0.36,1] }}>
+                    <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.19, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
                         <Card hoverEffect className="relative overflow-hidden group border-gray-100">
                             <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                                 <Clock size={100} />
@@ -208,7 +208,7 @@ const FarmerDashboard = () => {
                     </motion.div>
 
                     {/* Completed */}
-                    <motion.div initial={{ opacity:0, y:22 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.26, duration:0.45, ease:[0.22,1,0.36,1] }}>
+                    <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.26, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
                         <Card hoverEffect className="relative overflow-hidden group border-gray-100">
                             <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                                 <CheckCircle size={100} />

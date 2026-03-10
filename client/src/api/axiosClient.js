@@ -3,6 +3,10 @@ import axios from 'axios';
 
 const getBaseURL = () => {
     let url = import.meta.env.VITE_API_URL || '';
+    // Strip /api if it exists to get just the origin
+    if (url.endsWith('/api')) url = url.slice(0, -4);
+    if (url.endsWith('/api/')) url = url.slice(0, -5);
+    // Ensure it ends with /
     if (!url.endsWith('/')) url += '/';
     return url;
 };
@@ -59,7 +63,7 @@ axiosClient.interceptors.response.use(
                 return Promise.reject(error);
             }
             try {
-                const res = await axios.post(`${getBaseURL()}auth/refresh`, { refreshToken });
+                const res = await axios.post(`${getBaseURL()}api/auth/refresh`, { refreshToken });
                 const newAccessToken = res.data.accessToken;
                 const newRefreshToken = res.data.refreshToken;
                 localStorage.setItem('accessToken', newAccessToken);

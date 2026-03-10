@@ -42,7 +42,7 @@ const AnalyticsDashboard = () => {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const { data } = await client.get('/quality/analytics');
+                const { data } = await client.get('/api/quality/analytics');
                 setStats(data);
             } catch (error) {
                 console.error('Error fetching analytics:', error);

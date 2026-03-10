@@ -13,7 +13,7 @@ const MonitoringDashboard = () => {
 
     const fetchData = async () => {
         try {
-            const res = await client.get('/monitoring/sensors');
+            const res = await client.get('/api/monitoring/sensors');
             setData(res.data);
             setError(null);
         } catch (err) {

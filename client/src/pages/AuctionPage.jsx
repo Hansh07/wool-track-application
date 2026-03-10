@@ -10,10 +10,10 @@ import { Badge } from '../components/ui/Badge';
 import { Loader } from '../components/ui/Loader';
 
 const STATUS_CONFIG = {
-    Live:     { variant: 'success', icon: <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse inline-block mr-1.5" />, color: 'from-green-500/10 to-green-500/5 border-green-500/20' },
-    Upcoming: { variant: 'warning', icon: <Clock size={12} className="mr-1" />,  color: 'from-yellow-500/10 to-yellow-500/5 border-yellow-500/20' },
-    Ended:    { variant: 'neutral', icon: null, color: 'from-gray-100 to-gray-50 border-gray-200' },
-    Sold:     { variant: 'primary', icon: <Trophy size={12} className="mr-1" />, color: 'from-blue-500/10 to-blue-500/5 border-blue-500/20' },
+    Live: { variant: 'success', icon: <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse inline-block mr-1.5" />, color: 'from-green-500/10 to-green-500/5 border-green-500/20' },
+    Upcoming: { variant: 'warning', icon: <Clock size={12} className="mr-1" />, color: 'from-yellow-500/10 to-yellow-500/5 border-yellow-500/20' },
+    Ended: { variant: 'neutral', icon: null, color: 'from-gray-100 to-gray-50 border-gray-200' },
+    Sold: { variant: 'primary', icon: <Trophy size={12} className="mr-1" />, color: 'from-blue-500/10 to-blue-500/5 border-blue-500/20' },
 };
 
 const CountdownTimer = ({ endTime }) => {
@@ -49,7 +49,7 @@ export default function AuctionPage() {
 
     const fetchAuctions = async () => {
         try {
-            const res = await axiosClient.get('/auction');
+            const res = await axiosClient.get('/api/auction');
             if (res.data.success) setAuctions(res.data.auctions || []);
         } catch { /* silent */ }
         finally { setLoading(false); }
@@ -59,7 +59,7 @@ export default function AuctionPage() {
         const amount = bidAmounts[auctionId];
         if (!amount) return;
         try {
-            const res = await axiosClient.post(`/auction/${auctionId}/bid`, { amount: Number(amount) });
+            const res = await axiosClient.post(`/api/auction/${auctionId}/bid`, { amount: Number(amount) });
             if (res.data.success) { fetchAuctions(); setBidAmounts(p => ({ ...p, [auctionId]: '' })); }
         } catch (err) { alert(err.response?.data?.message || 'Bid failed'); }
     };
@@ -122,11 +122,10 @@ export default function AuctionPage() {
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab)}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                                activeTab === tab
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab
                                     ? 'bg-primary-600 text-white shadow-green'
                                     : 'text-gray-500 hover:text-gray-800 hover:bg-gray-50'
-                            }`}
+                                }`}
                         >
                             {tab}
                             {tab !== 'All' && (

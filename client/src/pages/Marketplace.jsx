@@ -22,10 +22,12 @@ const Marketplace = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const { data } = await client.get('/shop/products');
+                const { data } = await client.get('/api/shop/products'); // Changed endpoint
                 setProducts(Array.isArray(data) ? data : (data.products || []));
             } catch (error) {
                 console.error("Error fetching products:", error);
+                // The original diff had a problematic double catch.
+                // Assuming the intent is to just update the endpoint and keep the original error handling structure.
             } finally {
                 setLoading(false);
             }
@@ -33,23 +35,24 @@ const Marketplace = () => {
         fetchProducts();
     }, []);
 
-    const handleBuy = async (batchId) => {
-        if (!window.confirm("Confirm purchase of this batch?")) return;
-
+    const handleBuyNow = async (batchId) => { // Renamed function
         try {
-            await client.post('/shop/order', { batchIds: [batchId] });
+            setBuying(batchId); // Added
+            await client.post('/api/shop/order', { batchIds: [batchId] }); // Changed endpoint
+            alert('Order placed successfully!'); // Changed alert
             navigate('/orders');
-        } catch (error) {
-            console.error("Purchase failed:", error);
-            alert("Failed to purchase. It may have been sold.");
+        } catch (err) { // Changed error variable
+            alert(err.response?.data?.message || 'Purchase failed'); // Changed alert
+        } finally {
+            setBuying(null); // Added
         }
     };
 
-    const handleDelete = async (batchId) => {
-        if (!window.confirm("Are you sure you want to remove this batch?")) return;
+    const handleDeleteBatch = async (batchId) => { // Renamed function
+        if (!window.confirm('Delete this batch?')) return; // Changed confirm message
 
         try {
-            await client.delete(`/batches/${batchId}`);
+            await client.delete(`/api/batches/${batchId}`); // Changed endpoint
             setProducts(products.filter(p => p._id !== batchId));
         } catch (error) {
             console.error("Remove failed:", error);

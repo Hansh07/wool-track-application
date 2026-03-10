@@ -9,12 +9,12 @@ import { Badge } from '../components/ui/Badge';
 import { Loader } from '../components/ui/Loader';
 
 const TYPE_CONFIG = {
-    Quality:  { color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-200' },
-    Origin:   { color: 'text-blue-600',    bg: 'bg-blue-50 border-blue-200' },
-    Organic:  { color: 'text-green-600',   bg: 'bg-green-50 border-green-200' },
-    RWS:      { color: 'text-purple-600',  bg: 'bg-purple-50 border-purple-200' },
-    IWTO:     { color: 'text-orange-600',  bg: 'bg-orange-50 border-orange-200' },
-    ESG:      { color: 'text-teal-600',    bg: 'bg-teal-50 border-teal-200' },
+    Quality: { color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-200' },
+    Origin: { color: 'text-blue-600', bg: 'bg-blue-50 border-blue-200' },
+    Organic: { color: 'text-green-600', bg: 'bg-green-50 border-green-200' },
+    RWS: { color: 'text-purple-600', bg: 'bg-purple-50 border-purple-200' },
+    IWTO: { color: 'text-orange-600', bg: 'bg-orange-50 border-orange-200' },
+    ESG: { color: 'text-teal-600', bg: 'bg-teal-50 border-teal-200' },
 };
 
 export default function CertificatesPage() {
@@ -23,9 +23,9 @@ export default function CertificatesPage() {
     const [selected, setSelected] = useState(null);
 
     useEffect(() => {
-        axiosClient.get('/certificates/my')
+        axiosClient.get('/api/certificates/my')
             .then(res => { if (res.data.success) setCertificates(res.data.certificates || []); })
-            .catch(() => {})
+            .catch(() => { })
             .finally(() => setLoading(false));
     }, []);
 

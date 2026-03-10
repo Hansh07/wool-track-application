@@ -11,11 +11,11 @@ import { Loader } from '../components/ui/Loader';
 
 const RATING_CONFIG = {
     'A+': { color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-200' },
-    'A':  { color: 'text-green-600',   bg: 'bg-green-50 border-green-200' },
-    'B+': { color: 'text-blue-600',    bg: 'bg-blue-50 border-blue-200' },
-    'B':  { color: 'text-yellow-600',  bg: 'bg-yellow-50 border-yellow-200' },
-    'C':  { color: 'text-orange-600',  bg: 'bg-orange-50 border-orange-200' },
-    'D':  { color: 'text-red-600',     bg: 'bg-red-50 border-red-200' },
+    'A': { color: 'text-green-600', bg: 'bg-green-50 border-green-200' },
+    'B+': { color: 'text-blue-600', bg: 'bg-blue-50 border-blue-200' },
+    'B': { color: 'text-yellow-600', bg: 'bg-yellow-50 border-yellow-200' },
+    'C': { color: 'text-orange-600', bg: 'bg-orange-50 border-orange-200' },
+    'D': { color: 'text-red-600', bg: 'bg-red-50 border-red-200' },
 };
 
 const BLANK_ENV = { waterUsageLiters: '', energyUsageKwh: '', carbonFootprintKg: '', renewableEnergyPercent: '', wasteRecycledPercent: '', animalWelfareScore: '', organicCertified: false };
@@ -36,7 +36,9 @@ export default function ESGDashboard() {
     const fetchReports = async () => {
         try {
             const endpoint = user?.role === 'ADMIN' ? '/esg' : '/esg/my';
-            const res = await axiosClient.get(endpoint);
+            // Ensure endpoint starts with /api/
+            const apiEndpoint = endpoint.startsWith('/') ? `/api${endpoint}` : `/api/${endpoint}`;
+            const res = await axiosClient.get(apiEndpoint);
             if (res.data.success) {
                 setReports(res.data.reports || []);
                 if (res.data.stats) setStats(res.data.stats);
@@ -60,7 +62,7 @@ export default function ESGDashboard() {
                         : [],
                 },
             };
-            const res = await axiosClient.post('/esg', payload);
+            const res = await axiosClient.post('/api/esg', payload);
             if (res.data.success) { setShowForm(false); fetchReports(); }
         } catch (err) { alert(err.response?.data?.message || 'Submission failed'); }
         finally { setSubmitting(false); }

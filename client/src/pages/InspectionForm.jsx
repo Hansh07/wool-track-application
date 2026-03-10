@@ -26,7 +26,7 @@ const InspectionForm = () => {
     useEffect(() => {
         const fetchBatch = async () => {
             try {
-                const { data } = await client.get(`/batches/${id}`);
+                const { data } = await client.get(`/api/batches/${id}`);
                 setBatch(data);
             } catch (error) {
                 console.error("Error fetching batch:", error);
@@ -40,7 +40,7 @@ const InspectionForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await client.post('/quality/inspect', {
+            await client.post('/api/quality/inspect', {
                 batchId: id,
                 ...formData,
                 fiberDiameter: Number(formData.fiberDiameter),
@@ -145,8 +145,8 @@ const InspectionForm = () => {
                             <h3 className="text-lg font-bold text-gray-800 mb-4 border-b border-gray-100 pb-2">Final Decision</h3>
                             <div className="grid grid-cols-2 gap-4">
                                 <label className={`cursor-pointer rounded-xl p-6 border-2 flex flex-col items-center justify-center gap-3 transition-all ${formData.decision === 'Approved'
-                                        ? 'bg-green-50 border-green-500 text-gray-800'
-                                        : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-gray-100'
+                                    ? 'bg-green-50 border-green-500 text-gray-800'
+                                    : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-gray-100'
                                     }`}>
                                     <input
                                         type="radio" name="decision" value="Approved" className="hidden"
@@ -158,8 +158,8 @@ const InspectionForm = () => {
                                 </label>
 
                                 <label className={`cursor-pointer rounded-xl p-6 border-2 flex flex-col items-center justify-center gap-3 transition-all ${formData.decision === 'Rejected'
-                                        ? 'bg-red-50 border-red-500 text-gray-800'
-                                        : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-gray-100'
+                                    ? 'bg-red-50 border-red-500 text-gray-800'
+                                    : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-gray-100'
                                     }`}>
                                     <input
                                         type="radio" name="decision" value="Rejected" className="hidden"

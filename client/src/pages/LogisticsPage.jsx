@@ -39,7 +39,7 @@ export default function LogisticsPage() {
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
-        axiosClient.get('/logistics')
+        axiosClient.get('/api/logistics')
             .then(res => {
                 if (res.data.success) setShipments(res.data.shipments || []);
                 else setShipments(Array.isArray(res.data) ? res.data : []);
@@ -52,7 +52,7 @@ export default function LogisticsPage() {
         if (!trackInput.trim()) return;
         setTracking(true);
         try {
-            const res = await axiosClient.get('/logistics/track/' + trackInput.trim());
+            const res = await axiosClient.get('/api/logistics/track/' + trackInput.trim());
             if (res.data.success) setTracked(res.data.shipment);
             else setTracked(null);
         } catch {
@@ -67,7 +67,7 @@ export default function LogisticsPage() {
         e.preventDefault();
         setSaving(true);
         try {
-            const res = await axiosClient.post('/logistics', form);
+            const res = await axiosClient.post('/api/logistics', form);
             setShipments(prev => [res.data.shipment || res.data, ...prev]);
             setShowModal(false);
             setForm(BLANK_FORM);

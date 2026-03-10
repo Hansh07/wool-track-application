@@ -17,7 +17,7 @@ const BatchesList = () => {
     useEffect(() => {
         const fetchBatches = async () => {
             try {
-                const { data } = await client.get('/batches');
+                const { data } = await client.get('/api/batches');
                 setBatches(Array.isArray(data) ? data : (data.batches || []));
             } catch (error) {
                 console.error('Error fetching batches:', error);

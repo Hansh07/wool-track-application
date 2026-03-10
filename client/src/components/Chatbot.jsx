@@ -25,7 +25,7 @@ const Chatbot = () => {
         setLoading(true);
 
         try {
-            const { data } = await client.post('/chat', { message: trimmed }, { timeout: 60000 });
+            const { data } = await client.post('/api/chat', { message: trimmed }, { timeout: 60000 });
             setMessages(prev => [...prev, { text: data.reply || 'No response received.', sender: 'bot' }]);
         } catch (err) {
             const serverMsg = err.response?.data?.error;
@@ -61,11 +61,10 @@ const Chatbot = () => {
                                         <Leaf size={12} className="text-primary-600" />
                                     </div>
                                 )}
-                                <div className={`max-w-[75%] px-3 py-2 rounded-2xl text-sm leading-relaxed ${
-                                    msg.sender === 'user'
+                                <div className={`max-w-[75%] px-3 py-2 rounded-2xl text-sm leading-relaxed ${msg.sender === 'user'
                                         ? 'bg-primary-600 text-white rounded-br-sm'
                                         : 'bg-gray-100 text-gray-700 rounded-bl-sm border border-gray-200'
-                                }`}>
+                                    }`}>
                                     {msg.text}
                                 </div>
                             </div>
