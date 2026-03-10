@@ -33,7 +33,10 @@ const allowedOrigins = [
 
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        // Allow specific origins from environment variables
+        // Allow any Vercel preview URL dynamically
+        if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
             callback(null, true);
         } else {
             callback(new Error(`CORS: Origin ${origin} not allowed`));
@@ -74,18 +77,18 @@ app.get('/health', (req, res) => {
 });
 
 // ─── API Routes ──────────────────────────────────────────────────────────────
-app.use('/api/auth',        require('./routes/authRoutes'));
-app.use('/api/batches',     require('./routes/batchRoutes'));
-app.use('/api/quality',     require('./routes/qualityRoutes'));
-app.use('/api/shop',        require('./routes/shopRoutes'));
-app.use('/api/admin',       require('./routes/adminRoutes'));
-app.use('/api/monitoring',  require('./routes/monitoringRoutes'));
-app.use('/api/chat',        require('./routes/chatRoutes'));
-app.use('/api/auction',     require('./routes/auctionRoutes'));
-app.use('/api/logistics',   require('./routes/logisticsRoutes'));
-app.use('/api/certificates',require('./routes/certificateRoutes'));
-app.use('/api/inventory',   require('./routes/inventoryRoutes'));
-app.use('/api/esg',         require('./routes/esgRoutes'));
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/batches', require('./routes/batchRoutes'));
+app.use('/api/quality', require('./routes/qualityRoutes'));
+app.use('/api/shop', require('./routes/shopRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/monitoring', require('./routes/monitoringRoutes'));
+app.use('/api/chat', require('./routes/chatRoutes'));
+app.use('/api/auction', require('./routes/auctionRoutes'));
+app.use('/api/logistics', require('./routes/logisticsRoutes'));
+app.use('/api/certificates', require('./routes/certificateRoutes'));
+app.use('/api/inventory', require('./routes/inventoryRoutes'));
+app.use('/api/esg', require('./routes/esgRoutes'));
 
 // ─── Global Error Handler ────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
