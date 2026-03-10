@@ -65,6 +65,7 @@ const logger = winston.createLogger({
     format: logFormat,
     transports,
     exceptionHandlers,
+    exitOnError: false, // Prevent winston from exiting the process in production error scenarios
 });
 
 module.exports = logger;
