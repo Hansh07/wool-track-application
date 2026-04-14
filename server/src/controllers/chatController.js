@@ -1,4 +1,4 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const Groq = require("groq-sdk");
 
 const SYSTEM_PROMPT = `You are WoolMonitor AI, a helpful assistant for the WoolMonitor platform — a wool quality monitoring and trading system used in India.
 
@@ -33,63 +33,30 @@ const handleChat = async (req, res) => {
             return res.status(400).json({ error: "Message is required" });
         }
 
-        if (!process.env.GEMINI_API_KEY) {
-            console.error("GEMINI_API_KEY missing");
+        if (!process.env.GROQ_API_KEY) {
+            console.error("GROQ_API_KEY missing");
             return res.status(500).json({ error: "Server configuration error" });
         }
 
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+        const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+        
+        const fullPrompt = SYSTEM_PROMPT + "\n\nUser question: " + message;
+        
+        const completion = await groq.chat.completions.create({
+            messages: [{ role: "user", content: fullPrompt }],
+            model: "llama-3.1-8b-instant",
+            temperature: 0.7,
+            max_tokens: 1024,
+        });
+        
+        const text = stripMarkdown(completion.choices[0]?.message?.content || "");
 
-        // Try models in order — skip on quota (429) or not-found (404) errors
-        const MODELS = [
-            "gemini-2.0-flash-lite",
-            "gemini-1.5-flash-latest",
-            "gemini-1.5-pro-latest",
-            "gemini-2.0-flash",
-        ];
-        let text = null;
-        let allQuotaExceeded = true;
-
-        for (const modelName of MODELS) {
-            try {
-                const model = genAI.getGenerativeModel({ model: modelName });
-                const fullPrompt = SYSTEM_PROMPT + "\n\nUser question: " + message;
-                const result = await model.generateContent(fullPrompt);
-                text = stripMarkdown(result.response.text());
-                break;
-            } catch (err) {
-                const errMsg = String(err.message || err);
-                const httpStatus = err.status || err.statusCode || 'unknown';
-                // Log full error so we can diagnose
-                console.warn(`[chat] Model ${modelName} failed — HTTP ${httpStatus}: ${errMsg}`);
-
-                const isRetryable = httpStatus === 429 || httpStatus === 404 ||
-                    errMsg.includes('429') || errMsg.includes('404') ||
-                    errMsg.includes('quota') || errMsg.includes('not found');
-
-                if (!isRetryable) {
-                    allQuotaExceeded = false;
-                    throw err;
-                }
-                if (httpStatus === 429 || errMsg.includes('429') || errMsg.includes('quota')) {
-                    allQuotaExceeded = true;
-                }
-            }
-        }
-
-        if (text !== null) {
-            return res.json({ reply: text });
-        }
-
-        if (allQuotaExceeded) {
-            return res.status(503).json({
-                error: "The AI assistant quota is exhausted. To fix this, generate a new API key at https://aistudio.google.com/apikey and update GEMINI_API_KEY in server/.env"
-            });
-        }
-
-        res.status(500).json({ error: "AI assistant is unavailable right now. Please try again later." });
+        return res.json({ reply: text });
     } catch (error) {
-        console.error("Gemini error:", error);
+        console.error("Groq error:", error);
+        if (error.status === 429) {
+            return res.status(503).json({ error: "The AI assistant rate limit was reached. Please try again in a minute." });
+        }
         res.status(500).json({ error: "AI assistant is unavailable right now. Please try again later." });
     }
 };
