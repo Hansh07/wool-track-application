@@ -1,4 +1,6 @@
 <img width="1913" height="1105" alt="image" src="https://github.com/user-attachments/assets/e0453ddd-d00b-4969-b76c-6c27d3ee4814" /># Wool Monitoring Application 🐑
+<img width="1911" height="932" alt="image" src="https://github.com/user-attachments/assets/cc6c5c0c-2746-4955-ac22-96c1e8db56a2" />
+
 
 A modern, enterprise-grade full-stack application for managing the wool supply chain, from farm to fabric. This platform serves Farmers, Mill Operators, Quality Inspectors, and Buyers with tailored dashboards and tools.
 
