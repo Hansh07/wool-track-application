@@ -17,6 +17,7 @@ const Marketplace = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [showFilters, setShowFilters] = useState(false);
     const [filterGrade, setFilterGrade] = useState('');
+    const [buying, setBuying] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -191,14 +192,15 @@ const Marketplace = () => {
                                 </div>
 
                                 <Button
-                                    onClick={() => handleBuy(product._id)}
+                                    onClick={() => handleBuyNow(product._id)}
+                                    disabled={buying === product._id}
                                     className="w-full mt-2 shadow-neon bg-gradient-to-r from-primary-600 to-indigo-600 border-none"
                                 >
                                     <ShoppingBag size={16} className="mr-2" /> Buy Now
                                 </Button>
                                 {(user?.role === 'ADMIN' || user?.role === 'FARMER') && (
                                     <Button
-                                        onClick={() => handleDelete(product._id)}
+                                        onClick={() => handleDeleteBatch(product._id)}
                                         className="w-full mt-2 bg-red-500 hover:bg-red-600 border-none text-white"
                                     >
                                         <Trash2 size={16} className="mr-2" /> Remove

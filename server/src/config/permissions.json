@@ -34,6 +34,7 @@
         "reject_batch",
         "upload_quality_certificate",
         "view_quality_analytics",
+        "view_quality_results",
         "view_quality_logs",
         "issue_certificate",
         "view_certificates",

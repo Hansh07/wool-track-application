@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     LayoutDashboard, Package, ClipboardCheck, ShoppingCart,
     Settings, LogOut, Menu, X, ShoppingBag,
-    Activity, ChevronLeft, ChevronRight, BarChart2, Award
+    Activity, ChevronLeft, ChevronRight, BarChart2, Award,
+    Gavel, Truck, Warehouse, Leaf
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { cn } from '../lib/utils';
@@ -81,6 +82,10 @@ const DashboardLayout = ({ children, role }) => {
                     { to: '/create-batch', icon: Package, label: 'Create Batch' },
                     { to: '/batches', icon: ClipboardCheck, label: 'My Batches' },
                     { to: '/quality-results', icon: BarChart2, label: 'Quality Results' },
+                    { to: '/auction', icon: Gavel, label: 'Auctions' },
+                    { to: '/logistics', icon: Truck, label: 'Logistics' },
+                    { to: '/inventory', icon: Warehouse, label: 'Inventory' },
+                    { to: '/esg', icon: Leaf, label: 'ESG' },
                     ...common,
                 ];
             case 'QUALITY_INSPECTOR':
@@ -89,13 +94,17 @@ const DashboardLayout = ({ children, role }) => {
                     { to: '/batches', icon: Package, label: 'All Batches' },
                     { to: '/quality/analytics', icon: BarChart2, label: 'Analytics' },
                     { to: '/certificates', icon: Award, label: 'Certificates' },
+                    { to: '/esg', icon: Leaf, label: 'ESG' },
                     ...common,
                 ];
             case 'BUYER':
                 return [
                     { to: '/', icon: ShoppingBag, label: 'Marketplace' },
                     { to: '/orders', icon: ShoppingCart, label: 'My Orders' },
+                    { to: '/auction', icon: Gavel, label: 'Auctions' },
+                    { to: '/logistics', icon: Truck, label: 'Logistics' },
                     { to: '/certificates', icon: Award, label: 'Certificates' },
+                    { to: '/esg', icon: Leaf, label: 'ESG' },
                     ...common,
                 ];
             case 'MILL_OPERATOR':
@@ -103,13 +112,21 @@ const DashboardLayout = ({ children, role }) => {
                     { to: '/', icon: LayoutDashboard, label: 'Floor Ops' },
                     { to: '/batches', icon: Package, label: 'All Batches' },
                     { to: '/monitoring', icon: Activity, label: 'Monitoring' },
+                    { to: '/inventory', icon: Warehouse, label: 'Inventory' },
+                    { to: '/logistics', icon: Truck, label: 'Logistics' },
+                    { to: '/auction', icon: Gavel, label: 'Auctions' },
                     ...common,
                 ];
             case 'ADMIN':
                 return [
                     { to: '/admin', icon: Activity, label: 'Admin Panel' },
                     { to: '/batches', icon: Package, label: 'All Batches' },
+                    { to: '/monitoring', icon: Activity, label: 'Monitoring' },
+                    { to: '/auction', icon: Gavel, label: 'Auctions' },
+                    { to: '/logistics', icon: Truck, label: 'Logistics' },
+                    { to: '/inventory', icon: Warehouse, label: 'Inventory' },
                     { to: '/certificates', icon: Award, label: 'Certificates' },
+                    { to: '/esg', icon: Leaf, label: 'ESG' },
                     ...common,
                 ];
             default:

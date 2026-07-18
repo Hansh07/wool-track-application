@@ -40,6 +40,11 @@ export default function AuctionPage() {
     const [loading, setLoading] = useState(true);
     const [bidAmounts, setBidAmounts] = useState({});
     const [activeTab, setActiveTab] = useState('Live');
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [creating, setCreating] = useState(false);
+    const [createForm, setCreateForm] = useState({
+        batchId: '', title: '', description: '', startPrice: '', reservePrice: '', startTime: '', endTime: '', minBidIncrement: '100'
+    });
 
     useEffect(() => {
         fetchAuctions();
@@ -62,6 +67,28 @@ export default function AuctionPage() {
             const res = await axiosClient.post(`/api/auction/${auctionId}/bid`, { amount: Number(amount) });
             if (res.data.success) { fetchAuctions(); setBidAmounts(p => ({ ...p, [auctionId]: '' })); }
         } catch (err) { alert(err.response?.data?.message || 'Bid failed'); }
+    };
+
+    const handleCreateAuction = async (e) => {
+        e.preventDefault();
+        setCreating(true);
+        try {
+            const res = await axiosClient.post('/api/auction', {
+                ...createForm,
+                startPrice: Number(createForm.startPrice),
+                reservePrice: Number(createForm.reservePrice) || 0,
+                minBidIncrement: Number(createForm.minBidIncrement) || 100,
+            });
+            if (res.data.success) {
+                setShowCreateModal(false);
+                setCreateForm({ batchId: '', title: '', description: '', startPrice: '', reservePrice: '', startTime: '', endTime: '', minBidIncrement: '100' });
+                fetchAuctions();
+            }
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to create auction');
+        } finally {
+            setCreating(false);
+        }
     };
 
     const tabs = ['Live', 'Upcoming', 'Ended', 'All'];
@@ -94,7 +121,7 @@ export default function AuctionPage() {
                         </div>
                     </div>
                     {(user?.role === 'FARMER' || user?.role === 'ADMIN') && (
-                        <Button className="flex items-center gap-2">
+                        <Button onClick={() => setShowCreateModal(true)} className="flex items-center gap-2">
                             <Plus size={16} /> Create Auction
                         </Button>
                     )}
@@ -238,6 +265,108 @@ export default function AuctionPage() {
                     </div>
                 )}
             </div>
+
+            {/* Create Auction Modal */}
+            {showCreateModal && (
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <Card className="w-full max-w-lg border-gray-200">
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className="text-xl font-bold text-gray-800">Create Auction</h2>
+                            <button onClick={() => setShowCreateModal(false)} className="text-gray-400 hover:text-gray-800 transition-colors">
+                                <Plus size={20} className="rotate-45" />
+                            </button>
+                        </div>
+                        <form onSubmit={handleCreateAuction} className="space-y-4">
+                            <div>
+                                <label className="text-sm text-gray-600 mb-1 block">Title</label>
+                                <input
+                                    required
+                                    value={createForm.title}
+                                    onChange={e => setCreateForm(p => ({ ...p, title: e.target.value }))}
+                                    placeholder="e.g. Premium Merino Lot #42"
+                                    className="w-full bg-white border border-gray-300 text-gray-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary-500 placeholder-gray-400"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-sm text-gray-600 mb-1 block">Batch ID</label>
+                                <input
+                                    required
+                                    value={createForm.batchId}
+                                    onChange={e => setCreateForm(p => ({ ...p, batchId: e.target.value }))}
+                                    placeholder="Paste approved batch ID"
+                                    className="w-full bg-white border border-gray-300 text-gray-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary-500 placeholder-gray-400"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-sm text-gray-600 mb-1 block">Description</label>
+                                <textarea
+                                    value={createForm.description}
+                                    onChange={e => setCreateForm(p => ({ ...p, description: e.target.value }))}
+                                    placeholder="Describe the wool lot..."
+                                    rows={2}
+                                    className="w-full bg-white border border-gray-300 text-gray-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary-500 placeholder-gray-400 resize-none"
+                                />
+                            </div>
+                            <div className="grid grid-cols-3 gap-3">
+                                <div>
+                                    <label className="text-sm text-gray-600 mb-1 block">Start Price (₹)</label>
+                                    <input
+                                        required type="number"
+                                        value={createForm.startPrice}
+                                        onChange={e => setCreateForm(p => ({ ...p, startPrice: e.target.value }))}
+                                        placeholder="0"
+                                        className="w-full bg-white border border-gray-300 text-gray-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary-500 placeholder-gray-400"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-sm text-gray-600 mb-1 block">Reserve Price</label>
+                                    <input
+                                        type="number"
+                                        value={createForm.reservePrice}
+                                        onChange={e => setCreateForm(p => ({ ...p, reservePrice: e.target.value }))}
+                                        placeholder="Optional"
+                                        className="w-full bg-white border border-gray-300 text-gray-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary-500 placeholder-gray-400"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-sm text-gray-600 mb-1 block">Min Increment</label>
+                                    <input
+                                        type="number"
+                                        value={createForm.minBidIncrement}
+                                        onChange={e => setCreateForm(p => ({ ...p, minBidIncrement: e.target.value }))}
+                                        placeholder="100"
+                                        className="w-full bg-white border border-gray-300 text-gray-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary-500 placeholder-gray-400"
+                                    />
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label className="text-sm text-gray-600 mb-1 block">Start Time</label>
+                                    <input
+                                        required type="datetime-local"
+                                        value={createForm.startTime}
+                                        onChange={e => setCreateForm(p => ({ ...p, startTime: e.target.value }))}
+                                        className="w-full bg-white border border-gray-300 text-gray-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary-500"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-sm text-gray-600 mb-1 block">End Time</label>
+                                    <input
+                                        required type="datetime-local"
+                                        value={createForm.endTime}
+                                        onChange={e => setCreateForm(p => ({ ...p, endTime: e.target.value }))}
+                                        className="w-full bg-white border border-gray-300 text-gray-800 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary-500"
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex gap-3 pt-2">
+                                <Button type="button" variant="ghost" onClick={() => setShowCreateModal(false)} className="flex-1">Cancel</Button>
+                                <Button type="submit" isLoading={creating} className="flex-1">Create Auction</Button>
+                            </div>
+                        </form>
+                    </Card>
+                </div>
+            )}
         </DashboardLayout>
     );
 }

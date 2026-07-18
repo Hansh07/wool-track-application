@@ -82,10 +82,10 @@ export default function InventoryPage() {
     );
 
     const statCards = [
-        { label: 'Total Stock (kg)', value: summary.total?.toLocaleString() ?? inventory.reduce((s, i) => s + (i.quantity || 0), 0).toLocaleString(), color: 'emerald' },
-        { label: 'In Stock', value: summary.byStatus?.['In Stock']?.toLocaleString() ?? inventory.filter(i => i.status === 'In Stock').length, color: 'green' },
-        { label: 'Reserved', value: summary.byStatus?.['Reserved']?.toLocaleString() ?? inventory.filter(i => i.status === 'Reserved').length, color: 'yellow' },
-        { label: 'Shipped', value: summary.byStatus?.['Shipped']?.toLocaleString() ?? inventory.filter(i => i.status === 'Shipped').length, color: 'blue' },
+        { label: 'Total Stock (kg)', value: summary.total?.toLocaleString() ?? inventory.reduce((s, i) => s + (i.quantity || 0), 0).toLocaleString(), cardClass: 'bg-emerald-50 border-emerald-200', valueClass: 'text-emerald-600' },
+        { label: 'In Stock', value: summary.byStatus?.['In Stock']?.toLocaleString() ?? inventory.filter(i => i.status === 'In Stock').length, cardClass: 'bg-green-50 border-green-200', valueClass: 'text-green-600' },
+        { label: 'Reserved', value: summary.byStatus?.['Reserved']?.toLocaleString() ?? inventory.filter(i => i.status === 'Reserved').length, cardClass: 'bg-yellow-50 border-yellow-200', valueClass: 'text-yellow-600' },
+        { label: 'Shipped', value: summary.byStatus?.['Shipped']?.toLocaleString() ?? inventory.filter(i => i.status === 'Shipped').length, cardClass: 'bg-blue-50 border-blue-200', valueClass: 'text-blue-600' },
     ];
 
     return (
@@ -112,8 +112,8 @@ export default function InventoryPage() {
                 {/* Summary Cards */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {statCards.map(card => (
-                        <Card key={card.label} className={`bg-${card.color}-50 border-${card.color}-200 text-center`}>
-                            <p className={`text-3xl font-bold text-${card.color}-600`}>{card.value}</p>
+                        <Card key={card.label} className={`${card.cardClass} text-center`}>
+                            <p className={`text-3xl font-bold ${card.valueClass}`}>{card.value}</p>
                             <p className="text-xs text-gray-500 mt-1">{card.label}</p>
                         </Card>
                     ))}
