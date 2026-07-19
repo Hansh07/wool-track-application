@@ -1,3 +1,4 @@
+<img width="1917" height="930" alt="image" src="https://github.com/user-attachments/assets/d09fdd56-99d1-4e13-81ad-a69358641f04" />
 <img width="1913" height="1105" alt="Wool Monitoring Application Banner" src="https://github.com/user-attachments/assets/e0453ddd-d00b-4969-b76c-6c27d3ee4814" />
 
 # 🐑 Wool Monitoring Application — Enterprise Edition v2.0
