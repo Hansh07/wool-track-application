@@ -1,6 +1,7 @@
 # 🐑 Wool Monitoring Application — Enterprise Edition v2.0
 
 A modern, enterprise-grade full-stack application for managing the complete wool supply chain — from farm to fabric. This platform serves **Farmers**, **Mill Operators**, **Quality Inspectors**, **Buyers**, and **Admins** with tailored dashboards, real-time IoT monitoring, AI-powered insights, and a fully integrated marketplace.
+
 Live Link :- https://wool-track-application.vercel.app/
 
 [![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
