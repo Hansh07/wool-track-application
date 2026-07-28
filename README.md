@@ -13,9 +13,9 @@ Live Link :- https://wool-track-application.vercel.app/
 ---
 <img width="1917" height="930" alt="image" src="https://github.com/user-attachments/assets/d09fdd56-99d1-4e13-81ad-a69358641f04" />
 <img width="1913" height="1105" alt="Wool Monitoring Application Banner" src="https://github.com/user-attachments/assets/e0453ddd-d00b-4969-b76c-6c27d3ee4814" />
-## 🚀 Features
+# 🚀 Features
 
-### Core Features
+## Core Features
 - **Role-Based Access Control (RBAC)** — Secure, permission-based dashboards for Farmers, Inspectors, Mill Operators, Buyers, and Admins
 - **Detailed Batch Tracking** — Track wool batches through processing stages (Cleaning, Carding, Spinning, etc.) with a visual timeline
 - **Scientific Quality Inspections** — Lab interface for recording micron, yield, and tensile strength data with analytics
