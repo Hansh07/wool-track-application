@@ -9,7 +9,18 @@
         "seed": "node src/seed/seedUsers.js",
         "pm2:start": "pm2 start ecosystem.config.js",
         "pm2:stop": "pm2 stop wool-server",
-        "pm2:logs": "pm2 logs wool-server"
+        "pm2:logs": "pm2 logs wool-server",
+        "lint": "eslint src/ --ext .js",
+        "lint:fix": "eslint src/ --ext .js --fix",
+        "format": "prettier --write \"src/**/*.js\"",
+        "test": "jest --forceExit --detectOpenHandles",
+        "test:ci": "jest --forceExit --detectOpenHandles --coverage"
+    },
+    "jest": {
+        "testEnvironment": "node",
+        "testMatch": ["**/tests/**/*.test.js"],
+        "testTimeout": 10000,
+        "setupFiles": ["./tests/setup.js"]
     },
     "keywords": [],
     "author": "Hansh Raj",
@@ -43,6 +54,12 @@
         "winston-daily-rotate-file": "^5.0.0"
     },
     "devDependencies": {
-        "nodemon": "^3.1.9"
+        "eslint": "^8.57.1",
+        "eslint-config-prettier": "^9.1.2",
+        "eslint-plugin-node": "^11.1.0",
+        "jest": "^30.5.1",
+        "nodemon": "^3.1.9",
+        "prettier": "^3.9.6",
+        "supertest": "^7.2.2"
     }
 }
