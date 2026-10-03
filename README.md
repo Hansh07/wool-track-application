@@ -256,7 +256,7 @@ wool-monitoring-application/
 ## ⚡ Getting Started
 
 ### Prerequisites
-- **Node.js** v16+
+- **Node.js** v18+
 - **MongoDB** (Local or [Atlas URI](https://cloud.mongodb.com))
 - **Redis** (Optional — for caching & rate limiting)
 
@@ -264,8 +264,8 @@ wool-monitoring-application/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/wool-monitoring-application.git
-   cd wool-monitoring-application
+   git clone https://github.com/Hansh07/wool-track-application.git
+   cd wool-track-application
    ```
 
 2. **Install all dependencies** (client + server at once)
@@ -311,6 +311,7 @@ wool-monitoring-application/
    # ─── AI Services ──────────────────────────────────
    GEMINI_API_KEY=your_gemini_api_key
    OPENWEATHER_API_KEY=your_openweather_api_key
+   GROQ_API_KEY=your_groq_api_key
 
    # ─── Email (SMTP / Gmail) ─────────────────────────
    SMTP_HOST=smtp.gmail.com
@@ -399,6 +400,46 @@ The client includes a `vercel.json` for frontend deployment to [Vercel](https://
 cd client
 npx vercel --prod
 ```
+
+---
+
+## 🧪 Testing & CI/CD
+
+### Running Tests
+
+```bash
+# Run all tests
+cd server
+npm test
+
+# Run tests with coverage report
+npm run test:ci
+```
+
+### Linting & Formatting
+
+```bash
+cd server
+
+# Run ESLint
+npm run lint
+
+# Auto-fix lint issues
+npm run lint:fix
+
+# Format code with Prettier
+npm run format
+```
+
+### CI/CD Pipeline
+
+The project includes a GitHub Actions CI pipeline (`.github/workflows/ci.yml`) that runs on every push to `main`/`develop` and on pull requests:
+
+| Job | Description |
+|-----|-------------|
+| **🧪 Server — Lint & Test** | Installs dependencies, runs ESLint, executes Jest test suite, and uploads coverage report |
+| **🏗️ Client — Build** | Installs dependencies and validates the React production build |
+| **🐳 Docker — Build Validation** | Builds both server and client Docker images to ensure Dockerfiles are valid |
 
 ---
 
