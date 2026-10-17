@@ -39,23 +39,30 @@ const handleChat = async (req, res) => {
         }
 
         const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-        
-        const fullPrompt = SYSTEM_PROMPT + "\n\nUser question: " + message;
-        
+
         const completion = await groq.chat.completions.create({
-            messages: [{ role: "user", content: fullPrompt }],
-            model: "llama-3.1-8b-instant",
+            messages: [
+                { role: "system", content: SYSTEM_PROMPT },
+                { role: "user", content: message },
+            ],
+            model: "qwen/qwen3.8-27b",
             temperature: 0.7,
             max_tokens: 1024,
         });
-        
+
         const text = stripMarkdown(completion.choices[0]?.message?.content || "");
 
         return res.json({ reply: text });
     } catch (error) {
-        console.error("Groq error:", error);
+        console.error("Groq error:", error?.message || error);
         if (error.status === 429) {
             return res.status(503).json({ error: "The AI assistant rate limit was reached. Please try again in a minute." });
+        }
+        if (error.status === 404) {
+            return res.status(500).json({ error: "AI model not found. Please contact support." });
+        }
+        if (error.status === 401) {
+            return res.status(500).json({ error: "Invalid API key. Please contact support." });
         }
         res.status(500).json({ error: "AI assistant is unavailable right now. Please try again later." });
     }

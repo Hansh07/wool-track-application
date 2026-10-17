@@ -18,9 +18,13 @@
     },
     "jest": {
         "testEnvironment": "node",
-        "testMatch": ["**/tests/**/*.test.js"],
+        "testMatch": [
+            "**/tests/**/*.test.js"
+        ],
         "testTimeout": 10000,
-        "setupFiles": ["./tests/setup.js"]
+        "setupFiles": [
+            "./tests/setup.js"
+        ]
     },
     "keywords": [],
     "author": "Hansh Raj",
@@ -37,7 +41,7 @@
         "express": "^4.21.2",
         "express-rate-limit": "^7.4.1",
         "express-validator": "^7.2.0",
-        "groq-sdk": "^1.1.2",
+        "groq-sdk": "^1.6.0",
         "helmet": "^8.0.0",
         "ioredis": "^5.4.1",
         "jsonwebtoken": "^9.0.2",
